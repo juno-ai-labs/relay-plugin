@@ -8,7 +8,7 @@ import type { EngineInterface, Register } from 'claude-code'
  */
 const SERVER = 'plugin:relay:relay'
 
-type Disagreement = { title: string; text: string } | null
+type Disagreement = { text: string } | null
 
 let current: Disagreement = null
 
@@ -18,11 +18,10 @@ async function refresh($: EngineInterface): Promise<void> {
     const result = await $.mcp.call(SERVER, 'relay_state', { sessionId: await $.session.id() })
     const block = result.content?.find((c: { type: string }) => c.type === 'text') as { text?: string } | undefined
     if (!result.isError && block?.text) {
-      const state = JSON.parse(block.text) as { title: string; rallyFlag: string | null; openQuestions: unknown[] }
+      const state = JSON.parse(block.text) as { rallyFlag: string | null; openQuestions: unknown[] }
       const questions = state.openQuestions.length
       if (state.rallyFlag || questions > 0) {
         next = {
-          title: state.title,
           text: state.rallyFlag ?? `${questions} open question${questions === 1 ? '' : 's'} between your sessions`,
         }
       }
@@ -51,14 +50,12 @@ export const register: Register = on => {
 
   on('ui.render', { component: 'AbovePrompt' }, async ($, e, next) => {
     if (current === null || e.props.hasSurvey) return next(e)
-    const { Box, Text } = $.ui.resolve(e)
+    const { Text } = $.ui.resolve(e)
+    // The problem and what it breaks, then who acts; nothing else.
     return (
-      <Box>
-        <Text color="warning" weight="bold">
-          ⚠ Relay: your sessions disagree on "{current.title}".{' '}
-        </Text>
-        <Text>{current.text}</Text>
-      </Box>
+      <Text color="warning" weight="bold">
+        ⚠ {current.text}
+      </Text>
     )
   })
 }
