@@ -69,9 +69,10 @@ export const register: Register = on => {
     const { Box, Button, Text } = $.ui.resolve(e)
     const { items, questions } = current
     return (
-      <Box flexDirection="column">
+      // A step, not cells: the desktop sizes it to clear its native buttons; the terminal adds none.
+      <Box flexDirection="column" rowGap="sm">
         {items.map((item, i) => (
-          <Box key={`open-${i}`} flexDirection="row">
+          <Box key={`open-${i}`} flexDirection="row" alignItems="center">
             <Text color="warning" weight="bold">
               ⚠ {item.text}.{' '}
             </Text>
