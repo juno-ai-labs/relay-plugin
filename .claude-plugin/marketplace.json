@@ -1,0 +1,13 @@
+{
+  "name": "relay",
+  "owner": {
+    "name": "Juno Labs"
+  },
+  "plugins": [
+    {
+      "name": "relay",
+      "source": "./plugin",
+      "description": "Keeps your Claude Code sessions on the same work in step: a decision settled in one reaches the others with your next message."
+    }
+  ]
+}

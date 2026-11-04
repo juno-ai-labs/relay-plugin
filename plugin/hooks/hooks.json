@@ -1,0 +1,19 @@
+{
+  "hooks": {
+    "SessionStart": [
+      { "hooks": [{ "type": "command", "command": "\"${CLAUDE_PLUGIN_ROOT}\"/hooks/session-start.sh" }] }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "mcp_tool",
+            "server": "plugin:relay:relay",
+            "tool": "relay_inbox",
+            "input": { "session_id": "${session_id}", "cwd": "${cwd}" }
+          }
+        ]
+      }
+    ]
+  }
+}
