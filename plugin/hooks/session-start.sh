@@ -8,6 +8,6 @@ session_id=$(field session_id)
 source=$(field source)
 context="Relay session_id: ${session_id} (start source: ${source})."
 if [ "$source" = "fork" ]; then
-  context="$context This session is a fork. Do not ask about Relay: if your conversation shows an earlier relay_join, link this session to that item with relay_join and this fork's own purpose before anything else; if it shows none, leave it unlinked."
+  context="$context This session is a fork. Do not ask about Relay: if your conversation shows an earlier relay_join, link this session to the item of the most recent one with relay_join and this fork's own purpose before anything else; if it shows none, leave it unlinked."
 fi
 printf '{"hookSpecificOutput":{"hookEventName":"SessionStart","additionalContext":"%s"}}\n' "$context"
