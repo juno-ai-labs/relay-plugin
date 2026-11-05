@@ -53,9 +53,16 @@ async function refresh($: EngineInterface): Promise<void> {
 async function resolve($: EngineInterface, raw: string, verdict: 'resolved' | 'not_an_issue'): Promise<void> {
   try {
     const result = await $.mcp.call(SERVER, 'relay_resolve', { sessionId: await $.session.id(), text: raw, verdict })
-    if (result.isError) $.ui.toast('Relay could not take that entry off the list.')
-  } catch {
-    $.ui.toast('Relay is unreachable; the entry is still open.')
+    if (result.isError) {
+      const said = result.content?.find((c: { type: string }) => c.type === 'text') as { text?: string } | undefined
+      $.ui.toast(`Relay kept the entry open: ${said?.text ?? 'no reason given'}`)
+    }
+  } catch (error) {
+    // A session whose connection to Relay predates the button does not know
+    // the relay_resolve tool; the plugin reloads without a restart, the
+    // tool list does not.
+    const reason = error instanceof Error ? error.message : String(error)
+    $.ui.toast(`The entry is still open. If this session was open before Relay 0.6.0, restart the Claude app. (${reason})`)
   }
   await refresh($)
 }
