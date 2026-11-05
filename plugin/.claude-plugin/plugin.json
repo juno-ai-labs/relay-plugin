@@ -1,6 +1,6 @@
 {
   "name": "relay",
-  "version": "0.5.3",
+  "version": "0.5.4",
   "description": "Keeps your Claude Code sessions on the same work in step: a decision settled in one reaches the others with your next message.",
   "mcpServers": {
     "relay": {

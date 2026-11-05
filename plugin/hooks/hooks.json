@@ -19,7 +19,8 @@
             "tool": "relay_inbox",
             "input": {
               "session_id": "${session_id}",
-              "cwd": "${cwd}"
+              "cwd": "${cwd}",
+              "shows_open": "true"
             }
           }
         ]
